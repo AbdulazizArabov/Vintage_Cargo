@@ -1,0 +1,151 @@
+<!-- create-label.html (Label creation after order) -->
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Create Shipping Label | Vintage Cargo</title><link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@300;400;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"><link rel="stylesheet" href="css/style.css"></head>
+<body>
+  <header class="site-header"><div class="container nav-container"><div class="logo"><a href="index.html"><i class="fas fa-ship"></i> Vintage Cargo</a></div><button class="mobile-toggle" id="mobileToggle"><i class="fas fa-bars"></i></button><nav class="navbar" id="navbar"><ul class="nav-menu"><li><a href="index.html">Home</a></li><li><a href="about.html">About Us</a></li><li><a href="services.html">Services</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="shipment.html">Shipment Dates</a></li><li><a href="contact.html">Contact</a></li><li><a href="support.html">Support</a></li><li id="authNavLink"><a href="account.html">My Account</a></li></ul></nav></div></header>
+  <main><section class="page-header"><div class="container"><h1>Create Shipping Label</h1><p>Fill in your shipment details to generate a printable label.</p></div></section>
+  <section class="section"><div class="container"><div class="label-form-container"><form id="labelForm"><div class="form-row"><div class="form-group"><label>Sender full name</label><input type="text" id="senderName" required></div><div class="form-group"><label>Sender address</label><input type="text" id="senderAddress" required></div></div><div class="form-row"><div class="form-group"><label>Recipient full name</label><input type="text" id="recipientName" required></div><div class="form-group"><label>Recipient address</label><input type="text" id="recipientAddress" required></div></div><div class="form-row"><div class="form-group"><label>Weight (kg)</label><input type="number" id="weight" step="0.1" required></div><div class="form-group"><label>Service type</label><select id="serviceType"><option>Air Freight</option><option>Ocean Freight</option><option>Rail Freight</option><option>Ground Shipping</option></select></div></div><button type="submit" class="btn btn-primary">Generate Label</button></form><div id="labelPreview" class="label-preview" style="display:none;"><h3>Your Shipping Label</h3><div class="label-card"><p><strong>Tracking #:</strong> <span id="trackingNumber"></span></p><p><strong>From:</strong> <span id="previewSender"></span></p><p><strong>To:</strong> <span id="previewRecipient"></span></p><p><strong>Weight:</strong> <span id="previewWeight"></span> kg</p><p><strong>Service:</strong> <span id="previewService"></span></p><p><i class="fas fa-barcode"></i> | Estimated delivery: <span id="estDelivery"></span></p><button id="downloadLabelBtn" class="btn btn-secondary">Download Label (Demo)</button></div></div></div></div></section></main>
+  <footer class="site-footer"><div class="container footer-grid"><div class="footer-col"><h4><i class="fas fa-ship"></i> Vintage Cargo</h4><p>Global logistics that redefine reliability.</p><div class="social-icons"><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i class="fab fa-linkedin-in"></i></a><a href="#"><i class="fab fa-twitter"></i></a><a href="#"><i class="fab fa-instagram"></i></a></div></div><div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="services.html">Services</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="shipment.html">Arrival dates</a></li><li><a href="contact.html">Contact</a></li><li><a href="support.html">Support</a></li></ul></div><div class="footer-col"><h4>Contact Info</h4><ul class="contact-info"><li><i class="fas fa-map-marker-alt"></i> 23 Logistics Ave, Global Trade Center</li><li><i class="fas fa-phone-alt"></i> +1 (800) 456-7890</li><li><i class="fas fa-envelope"></i> hello@vintagecargo.com</li></ul></div></div><div class="footer-bottom"><p>&copy; 2025 Vintage Cargo Logistics. All rights reserved.</p></div></footer>
+  <script src="JavaScript/script.js"></script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Shipping Label | Vintage Cargo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav-container">
+      <div class="logo"><a href="index.html"><i class="fas fa-ship"></i> Vintage Cargo</a></div>
+      <button class="mobile-toggle" id="mobileToggle"><i class="fas fa-bars"></i></button>
+      <nav class="navbar" id="navbar">
+        <ul class="nav-menu">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="shipment.html">Shipment Dates</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="support.html">Support</a></li>
+          <li id="authNavLink"><a href="account.html">My Account</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-header">
+      <div class="container">
+        <h1>Create Shipping Label</h1>
+        <p>Fill in your shipment details to generate a printable label.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="label-form-container">
+          <form id="labelForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Sender full name</label>
+                <input type="text" id="senderName" required>
+              </div>
+              <div class="form-group">
+                <label>Sender address</label>
+                <input type="text" id="senderAddress" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Recipient full name</label>
+                <input type="text" id="recipientName" required>
+              </div>
+              <div class="form-group">
+                <label>Recipient address</label>
+                <input type="text" id="recipientAddress" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Weight (kg)</label>
+                <input type="number" id="weight" step="0.1" required>
+              </div>
+              <div class="form-group">
+                <label>Service type</label>
+                <select id="serviceType">
+                  <option>Air Freight</option>
+                  <option>Ocean Freight</option>
+                  <option>Rail Freight</option>
+                  <option>Ground Shipping</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Generate Label</button>
+          </form>
+
+          <div id="labelPreview" class="label-preview" style="display:none;">
+            <h3>Your Shipping Label</h3>
+            <div class="label-card">
+              <p><strong>Tracking #:</strong> <span id="trackingNumber"></span></p>
+              <p><strong>From:</strong> <span id="previewSender"></span></p>
+              <p><strong>To:</strong> <span id="previewRecipient"></span></p>
+              <p><strong>Weight:</strong> <span id="previewWeight"></span> kg</p>
+              <p><strong>Service:</strong> <span id="previewService"></span></p>
+              <p><i class="fas fa-barcode"></i> | Estimated delivery: <span id="estDelivery"></span></p>
+              <button id="downloadLabelBtn" class="btn btn-secondary">Download Label (Demo)</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <h4><i class="fas fa-ship"></i> Vintage Cargo</h4>
+        <p>Global logistics that redefine reliability.</p>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="shipment.html">Arrival dates</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="support.html">Support</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact Info</h4>
+        <ul class="contact-info">
+          <li><i class="fas fa-map-marker-alt"></i> 23 Logistics Ave, Global Trade Center</li>
+          <li><i class="fas fa-phone-alt"></i> +1 (800) 456-7890</li>
+          <li><i class="fas fa-envelope"></i> hello@vintagecargo.com</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Vintage Cargo Logistics. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="JavaScript/script.js"></script>
+</body>
+</html>
