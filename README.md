@@ -158,7 +158,7 @@ Recommended screenshots:
 Example format:
 
 ```md
-![Homepage Screenshot](assets/homepage-screenshot.png)
+![Homepage Screenshot](assets/screenshot.png)
 ```
 
 ## Team Members
