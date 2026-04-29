@@ -143,23 +143,20 @@ This improves usability on desktops, tablets, and mobile devices.
 
 ## Screenshots
 
-Screenshots can be added to this section to show the final appearance of the application.
+![Vintage Cargo screenshot](assets/screenshot.png)
 
-Recommended screenshots:
+![Vintage Cargo screenshot 61](assets/Screenshot%20(61).png)
 
-- Homepage
-- Services page
-- Pricing page
-- Login page
-- Create Label page
-- Support page
-- Mobile navigation view
+![Vintage Cargo screenshot 62](assets/Screenshot%20(62).png)
 
-Example format:
+![Vintage Cargo screenshot 63](assets/Screenshot%20(63).png)
 
-```md
-![Homepage Screenshot](assets/screenshot.png)
-```
+![Vintage Cargo screenshot 64](assets/Screenshot%20(64).png)
+
+![Vintage Cargo screenshot 65](assets/Screenshot%20(65).png)
+
+
+
 
 ## Team Members
 
@@ -219,4 +216,3 @@ These improvements would make the project closer to a production-ready logistics
 Vintage Cargo shows how HTML, CSS, and JavaScript can be used to create a complete, responsive, and interactive business website.
 
 The project helped me practice important front-end development skills and understand how to organize a professional web application.
-
