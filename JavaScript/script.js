@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Close mobile menu when a link is clicked
   document.querySelectorAll('.nav-menu a').forEach(link => {
     link.addEventListener('click', () => {
       if (navMenu && navMenu.classList.contains('active')) {
@@ -34,8 +33,30 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // ========== AUTHENTICATION SYSTEM ==========
-  function getUsers() {
+  const embeddedRemoteUsers = [
+    { id: 1, name: 'Demo User', email: 'demo@vintagecargo.com', password: 'demo1234' }
+  ];
+  let remoteUsersCache = null;
+
+  async function fetchRemoteUsers() {
+    if (remoteUsersCache !== null) return remoteUsersCache;
+    try {
+      const response = await fetch('data/users.json');
+      if (!response.ok) throw new Error('Could not load remote users');
+      remoteUsersCache = await response.json();
+    } catch (error) {
+      remoteUsersCache = embeddedRemoteUsers;
+    }
+    return remoteUsersCache;
+  }
+
+  function getLocalUsers() {
     return JSON.parse(localStorage.getItem('vintageUsers') || '[]');
+  }
+
+  async function getUsers() {
+    const remoteUsers = await fetchRemoteUsers();
+    return [...remoteUsers, ...getLocalUsers()];
   }
 
   function saveUsers(users) {
@@ -65,10 +86,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // Registration form
   const registerForm = document.getElementById('registerForm');
   if (registerForm) {
-    registerForm.addEventListener('submit', function(e) {
+    registerForm.addEventListener('submit', async function(e) {
       e.preventDefault();
       const name = document.getElementById('regName').value.trim();
       const email = document.getElementById('regEmail').value.trim();
@@ -77,27 +97,26 @@ document.addEventListener('DOMContentLoaded', function() {
         alert('Please fill all fields (password min 4 chars).');
         return;
       }
-      const users = getUsers();
+      const users = await getUsers();
       if (users.find(u => u.email === email)) {
         alert('Email already registered. Please login.');
         return;
       }
-      const newUser = { id: Date.now(), name, email, password: pwd };
-      users.push(newUser);
-      saveUsers(users);
+      const localUsers = getLocalUsers();
+      localUsers.push({ id: Date.now(), name, email, password: pwd });
+      saveUsers(localUsers);
       alert('Registration successful! Please login.');
       window.location.href = 'login.html';
     });
   }
 
-  // Login form
   const loginForm = document.getElementById('loginForm');
   if (loginForm) {
-    loginForm.addEventListener('submit', function(e) {
+    loginForm.addEventListener('submit', async function(e) {
       e.preventDefault();
       const email = document.getElementById('loginEmail').value.trim();
       const pwd = document.getElementById('loginPassword').value;
-      const users = getUsers();
+      const users = await getUsers();
       const user = users.find(u => u.email === email && u.password === pwd);
       if (user) {
         setCurrentUser({ id: user.id, name: user.name, email: user.email });
@@ -109,7 +128,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Account page: display user name
   const userNameSpan = document.getElementById('userNameDisplay');
   if (userNameSpan) {
     const current = getCurrentUser();
@@ -120,7 +138,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // Logout button
   const logoutBtn = document.getElementById('logoutBtn');
   if (logoutBtn) {
     logoutBtn.addEventListener('click', function(e) {
@@ -130,24 +147,77 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // ========== LABEL CREATION ==========
+  function parseDimensions(text) {
+    const match = text.match(/(\d+\.?\d*)\s*[xX]\s*(\d+\.?\d*)\s*[xX]\s*(\d+\.?\d*)/);
+    if (!match) return null;
+    const length = parseFloat(match[1]);
+    const width = parseFloat(match[2]);
+    const height = parseFloat(match[3]);
+    return { length, width, height, volume: (length * width * height) / 1000 };
+  }
+
+  function calculatePrice(service, weight, volume) {
+    const multipliers = {
+      'Air Freight': 0.35,
+      'Ocean Freight': 0.12,
+      'Rail Freight': 0.2,
+      'Ground Shipping': 0.16
+    };
+    const rate = multipliers[service] || 0.15;
+    const weightCharge = Math.max(weight * 2.2, 25);
+    const volumeCharge = volume ? volume * 18 : 0;
+    return Math.max(weightCharge, volumeCharge) * rate + 15;
+  }
+
+  function formatPrice(value) {
+    return value.toFixed(2);
+  }
+
+  function getEstimatedDays(service) {
+    const map = {
+      'Air Freight': 3,
+      'Ocean Freight': 22,
+      'Rail Freight': 12,
+      'Ground Shipping': 5
+    };
+    return map[service] || 7;
+  }
+
   const labelForm = document.getElementById('labelForm');
   if (labelForm) {
     labelForm.addEventListener('submit', function(e) {
       e.preventDefault();
-      const sender = document.getElementById('senderName').value + ', ' + document.getElementById('senderAddress').value;
-      const recipient = document.getElementById('recipientName').value + ', ' + document.getElementById('recipientAddress').value;
-      const weight = document.getElementById('weight').value;
-      const service = document.getElementById('serviceType').value;
+      const dimensions = document.getElementById('dimensions')?.value.trim();
+      const weightValue = parseFloat(document.getElementById('weight')?.value || '0');
+      const origin = document.getElementById('originAddress')?.value.trim();
+      const destination = document.getElementById('destinationAddress')?.value.trim();
+      const email = document.getElementById('email')?.value.trim();
+      const service = document.getElementById('serviceType')?.value;
+
+      if (!dimensions || !weightValue || !origin || !destination || !email || !service) {
+        alert('Please complete all fields before generating your label.');
+        return;
+      }
+
+      const dimensionValues = parseDimensions(dimensions);
+      if (!dimensionValues) {
+        alert('Please enter dimensions as Length x Width x Height, for example 40x30x20.');
+        return;
+      }
+
       const tracking = 'VINTAGE' + Math.floor(Math.random() * 1000000);
-      const estDays = { 'Air Freight': 3, 'Ocean Freight': 22, 'Rail Freight': 12, 'Ground Shipping': 5 };
       const deliveryDate = new Date();
-      deliveryDate.setDate(deliveryDate.getDate() + (estDays[service] || 7));
+      deliveryDate.setDate(deliveryDate.getDate() + getEstimatedDays(service));
+      const price = calculatePrice(service, weightValue, dimensionValues.volume);
+
       document.getElementById('trackingNumber').innerText = tracking;
-      document.getElementById('previewSender').innerText = sender;
-      document.getElementById('previewRecipient').innerText = recipient;
-      document.getElementById('previewWeight').innerText = weight;
       document.getElementById('previewService').innerText = service;
+      document.getElementById('previewOrigin').innerText = origin;
+      document.getElementById('previewDestination').innerText = destination;
+      document.getElementById('previewDimensions').innerText = dimensions;
+      document.getElementById('previewWeight').innerText = weightValue;
+      document.getElementById('previewEmail').innerText = email;
+      document.getElementById('priceEstimate').innerText = formatPrice(price);
       document.getElementById('estDelivery').innerText = deliveryDate.toDateString();
       document.getElementById('labelPreview').style.display = 'block';
     });
@@ -160,7 +230,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // ========== LIVE CHAT SIMULATION ==========
   const sendChatBtn = document.getElementById('sendChatBtn');
   const chatInput = document.getElementById('chatInput');
   const chatWindow = document.getElementById('chatWindow');
@@ -180,7 +249,7 @@ document.addEventListener('DOMContentLoaded', function() {
       addMessage(msg, true);
       chatInput.value = '';
       setTimeout(() => {
-        addMessage("Thank you for your message! A Vintage Cargo agent will respond shortly (demo mode).");
+        addMessage('Thank you for your message! A Vintage Cargo agent will respond shortly (demo mode).');
       }, 800);
     });
 
@@ -189,7 +258,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // ========== FAQ ACCORDION ==========
   document.querySelectorAll('.faq-question').forEach(btn => {
     btn.addEventListener('click', function() {
       const answer = this.nextElementSibling;
@@ -205,7 +273,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // ========== CONTACT FORM ==========
   const contactForm = document.getElementById('contactForm');
   if (contactForm) {
     contactForm.addEventListener('submit', function(e) {
@@ -215,6 +282,5 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Update navigation bar based on login status
   updateAuthNav();
 });

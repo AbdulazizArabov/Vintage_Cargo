@@ -1,11 +1,9 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign In | Vintage Cargo</title>
+  <title>Rail Freight | Vintage Cargo</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="stylesheet" href="css/style.css">
@@ -24,7 +22,7 @@
           <li><a href="shipment.html">Shipment Dates</a></li>
           <li><a href="contact.html">Contact</a></li>
           <li><a href="support.html">Support</a></li>
-          <li id="authNavLink"><a href="login.html" class="active">Sign In</a></li>
+          <li id="authNavLink"><a href="login.html">Sign In</a></li>
         </ul>
       </nav>
     </div>
@@ -33,27 +31,69 @@
   <main>
     <section class="page-header">
       <div class="container">
-        <h1>Welcome back</h1>
-        <p>Sign in to access your account, create labels, and track shipments.</p>
+        <h1>Rail Freight</h1>
+        <p>Efficient rail transport for large cargo shipments over land.</p>
       </div>
     </section>
 
     <section class="section">
       <div class="container">
-        <div class="auth-container">
-          <div class="auth-card">
-            <h3>Sign In</h3>
-            <form id="loginForm">
+        <div class="service-detailed">
+          <i class="fas fa-train"></i>
+          <h3>High-capacity rail logistics</h3>
+          <p>Rail Freight is an eco-friendly and reliable choice for continental shipping. It delivers strong capacity with consistent transit times for bulk goods and industrial freight.</p>
+        </div>
+
+        <div class="label-form-container">
+          <h3>Get an estimate and generate a label</h3>
+          <form id="labelForm">
+            <div class="form-row">
               <div class="form-group">
-                <input type="email" id="loginEmail" placeholder="Email address" required>
+                <label>Dimensions (cm)</label>
+                <input type="text" id="dimensions" placeholder="Length x Width x Height" required>
               </div>
               <div class="form-group">
-                <input type="password" id="loginPassword" placeholder="Password" required>
+                <label>Weight (kg)</label>
+                <input type="number" id="weight" step="0.1" placeholder="Weight" required>
               </div>
-              <button type="submit" class="btn btn-primary">Log In</button>
-              <p class="form-note">Demo: use any email & password (will be stored locally)</p>
-              <p>Don't have an account? <a href="register.html" class="accent-link">Register here</a></p>
-            </form>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>From address</label>
+                <input type="text" id="originAddress" placeholder="Origin address" required>
+              </div>
+              <div class="form-group">
+                <label>To address</label>
+                <input type="text" id="destinationAddress" placeholder="Destination address" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="email" placeholder="Email" required>
+              </div>
+              <div class="form-group">
+                <label>Service type</label>
+                <input type="text" id="serviceType" value="Rail Freight" readonly>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Generate Label</button>
+          </form>
+
+          <div id="labelPreview" class="label-preview" style="display:none;">
+            <h3>Shipping label preview</h3>
+            <div class="label-card">
+              <p><strong>Tracking #:</strong> <span id="trackingNumber"></span></p>
+              <p><strong>Service:</strong> <span id="previewService"></span></p>
+              <p><strong>From:</strong> <span id="previewOrigin"></span></p>
+              <p><strong>To:</strong> <span id="previewDestination"></span></p>
+              <p><strong>Dimensions:</strong> <span id="previewDimensions"></span></p>
+              <p><strong>Weight:</strong> <span id="previewWeight"></span> kg</p>
+              <p><strong>Email:</strong> <span id="previewEmail"></span></p>
+              <p><strong>Estimated price:</strong> $<span id="priceEstimate"></span></p>
+              <p><i class="fas fa-calendar-check"></i> Estimated delivery: <span id="estDelivery"></span></p>
+              <button id="downloadLabelBtn" class="btn btn-secondary">Download Label (Demo)</button>
+            </div>
           </div>
         </div>
       </div>
